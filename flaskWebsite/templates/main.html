@@ -1,0 +1,228 @@
+<!doctype html>
+<html>
+ 
+<head>
+    <title>Project IoT</title>
+    <meta http–equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Didact+Gothic&display=swap" rel="stylesheet">
+    <style>
+    body {
+        text-align: center;
+        padding: 0px;
+        margin: 0px;
+    }
+    h1,h2,h3,h4,h5 {
+    color: black;
+    font-family: 'Carter One', cursive;
+    }
+    p {
+    font-family: 'Didact Gothic', sans-serif;
+    }
+    .clear:before,
+    .clear:after {
+        content: “”;
+        display: table;
+    }
+    .clear:after {
+        clear: both;
+    }
+    .clear {
+        *zoom: 1;
+    }
+    .wrapper {
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 30px;
+        left: 0;
+        margin: 30px;
+        border: 1px solid #cccccc;
+    }
+    /* Add a black background color to the top navigation */
+    .topnav {
+      background-color: #333;
+      overflow: hidden;
+    }
+    /* Style the links inside the navigation bar */
+    .topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: bold;
+    }
+    /* Change the color of links on hover */
+    .topnav a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+    /* Add a color to the active/current link */
+    .topnav a.active {
+      background-color: #b38f00;
+      color: white;
+    }
+    .gauge {
+        display: block;
+        float: left;
+    }
+    #g1 {
+        width: 50%;
+    }
+    #g2 {
+        width: 50%;
+    }
+    #g3 {
+        width: 50%;
+    }
+    #g4 {
+        width: 50%;
+    }
+    .button {
+    border: none;
+    color: white;
+    padding: 17px 34px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    }
+    .button1 {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+    }
+    .button1:hover {
+    background-color: #4CAF50;
+    color: white;
+    }
+    .center {
+    margin: auto;
+    width: 50%
+    }
+    .dropbtn {
+    background-color: white;
+    color: black;
+    padding: 1px 44px;
+    font-size: 20px;
+    border: 4px solid black;
+    border-radius: 6px;
+    cursor: pointer;
+    }
+    .dropdown {
+    position: relative;
+    display: inline-block;
+    }
+    .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    }
+    .dropdown-content a {
+    color: black;
+    padding: 12px 40px;
+    text-decoration: none;
+    display: block;
+    }
+    .dropdown-content a:hover {background-color: #b8b894}
+    .dropdown:hover .dropdown-content {
+    display: block;
+    }
+    .dropdown:hover .dropbtn {
+    background-color: #b38600;
+    }  
+    .space {
+    width: 40%;
+    margin: 0px auto;
+    padding: 30px;
+    } 
+    .footy {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      padding: 8px;
+      width: 100%;
+      background-color: #020808;
+      color: white;
+      text-align: center;
+      font-size: 10px;
+    }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+      <a class="active" href="index">Home</a>
+      <a href="Graph_mode">Graph Mode</a>
+      <a href="info">Information</a>
+    </div>
+    <div class="wrapper clear">
+        <h1 align="center">Air & Noise monitoring in {{location}}</h1>
+        <div class="center">
+        <div class="dropdown">
+          <button class="dropbtn"><h4>Location</h4></button>
+          <div class="dropdown-content">
+            <a href="#">Centre de Flacq</a>
+          </div>
+        </div>
+        </div>
+        <div class="space"></div>
+        <div id="g1" class="gauge"></div>
+        <div id="g2" class="gauge"></div>
+        <div id="g3" class="gauge"></div>
+        <div id="g4" class="gauge"></div>
+        <h3> Noise Level: {{noise}}</h3>
+        <p align="center"><a href=index><button class="button button1">Refresh</button></a></p>
+        <div class="space"></div>
+
+    </div>
+    <div class="footy">Copyrights: Ishan FOOLELL</div>
+    <script src="{{ url_for('static', filename='raphael-2.1.4.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='justgage.js') }}"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var g1, g2, g3, g4;
+ 
+        var g1 = new JustGage({
+            id: "g1",
+            value: {{temperature}},
+            min: 0,
+            max: 50,
+            title: "Temperature (°C)",
+        });
+ 
+        var g2 = new JustGage({
+            id: "g2",
+            value: {{humidity}},
+            min: 0,
+            max: 100,
+            title: "Humidity (g/kg)",
+        });
+
+        var g3 = new JustGage({
+            id: "g3",
+            value: {{CO}},
+            min: 0,
+            max: 200,
+            title: "CO level (ppm)",
+        });
+ 
+        var g4 = new JustGage({
+            id: "g4",
+            value: {{Smoke}},
+            min: 0,
+            max: 200,
+            title: "Smoke level (ppm)",
+        });
+    });
+    </script>
+</body>
+</html>
